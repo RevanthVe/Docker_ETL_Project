@@ -1,21 +1,15 @@
 import boto3
 import hashlib
 import json
-import os
 import psycopg2
 from datetime import datetime
 
-# Set mock AWS credentials
-os.environ['AWS_ACCESS_KEY_ID'] = 'mock_access_key'
-os.environ['AWS_SECRET_ACCESS_KEY'] = 'mock_secret_key'
-os.environ['AWS_SESSION_TOKEN'] = 'mock_session_token'
-
-# SQS configuration
+# Configure a client for AWS SQS to read messages from a local queue
 sqs_client = boto3.client('sqs', endpoint_url='http://localhost:4566', region_name='us-east-1')
 queue_url = 'http://localhost:4566/000000000000/login-queue'
 
 
-# Mask PII and write to PostgreSQL
+# Defines a function to mask the device_id and ip fields using MD5 hashing.
 def mask_data(data):
     if 'device_id' in data and 'ip' in data:
         hashed_device_id = hashlib.md5(data['device_id'].encode()).hexdigest()
@@ -33,6 +27,7 @@ def mask_data(data):
     return data
 
 
+# Connect to PostgreSQL database
 def write_to_postgres(data):
     connection = psycopg2.connect(
         host="localhost",
@@ -98,5 +93,6 @@ def process_sqs_messages():
     write_to_postgres(data_to_write)
 
 
+# If the script runs as the main program, it processes messages from the SQS queue
 if __name__ == "_main_":
     process_sqs_messages()
