@@ -1,6 +1,7 @@
 # Fetch_ETL_Project
 
 ## Objectives
+
 1. read JSON data containing user login behavior from an AWS SQS Queue, that is made
 available via a custom localstack image that has the data pre loaded.
 2. Fetch wants to hide personal identifiable information (PII). The fields `device_id` and `ip`
@@ -22,7 +23,7 @@ app_version integer,
 create_date date
 );
 
-Application Deployment and Assumptions
+## Application Deployment and Assumptions
 
 1. Deployment in Production:
    - Use containerization (e.g., Docker) to package the application and its dependencies.
@@ -49,7 +50,8 @@ Application Deployment and Assumptions
    - The local setup (localstack and Postgres) mirrors the production environment.
    - MD5 hashing is sufficient for masking PII, and the hashed values won't collide.
 
-Step by step guide to run the code:
+## Step by step guide to run the code
+
 - Install Python, Git, Docker and Docker-Compose.
 - On terminal, Clone the repository by using command: git clone repo_url
 - Open the repository using command: cd Fetch_ETL_Project
